@@ -1,11 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
-const NavBar = () => {
+const NavBar = ({userName}) => {
+    const name=userName
   return (
-    <div className='text-lg flex flex-row gap-3 underline '>
+    <div className='flex flex-row w-screen justify-between bg-blue-200'>
+        <div>PalsFeed</div>
+        <div>{name? name: "Name Props sent failed..."}</div>
     </div>
   )
 }
 
-export default NavBar;
+export default NavBar
