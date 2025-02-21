@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 import DbConnect from "./config/db.js";
 import {register, login, admin, logout } from "./Controller/authController.js";
 import authMiddleware from "./Middleware/authMiddleware.js";
-import user from "./Controller/userController.js";
+import user from "./Controller/userController.js";      //handles user related APIs
+import postRoutes from './Routes/postRoutes.js'     // Handles all post related APIs
 
 
 
@@ -38,6 +39,10 @@ app.get("/user", authMiddleware, user);   // Middleware checks the credentials. 
 app.get("/admin", admin)
 
 app.delete('/logout', logout);
+
+// connects the postRoutes.js to the main server
+app.use('/posts', postRoutes)
+// now all post related routes start with /post, /post/create, /post/all
 
 // Start Server
 app.listen(8080, () => console.log("🚀 Server listening on port 8080"));
