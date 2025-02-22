@@ -1,58 +1,46 @@
 import { useState } from "react";
 import axios from "axios";
 
-const PostForm = ({ userId }) => {
+export default function PostForm({ userName }) {
   const [caption, setCaption] = useState("");
-  const [photo, setPhoto] = useState(null);
+  const [message, setMessage] = useState("");
+
+//   console.log(userName);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!caption && !photo) return alert("Post cannot be empty!");
-
-    const formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("caption", caption);
-    if (photo) formData.append("photo", photo);
-
     try {
-      const response = await axios.post("http://localhost:8080/createPost", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const response = await axios.post("http://localhost:8080/posts/create", {
+        userName,
+        caption,
       });
-
-      if (response.data.status) {
-        alert("Post Created!");
-        setCaption("");
-        setPhoto(null);
-      } else {
-        alert("Failed to create post");
-      }
+      setMessage(response.data.message);
+      setCaption("");
     } catch (error) {
-      console.error("Error creating post:", error);
+      setMessage("Error creating post");
     }
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="max-w-md mx-auto p-4 border rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-4">Create a Post</h2>
       <form onSubmit={handleSubmit}>
         <textarea
-          className="w-full border p-2 rounded-md"
-          placeholder="What's on your mind?"
+          className="w-full p-2 border rounded"
+          placeholder="Write your caption..."
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
+          required
         />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setPhoto(e.target.files[0])}
-          className="mt-2"
-        />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2">
+        <button
+          type="submit"
+          className="mt-3 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        >
           Post
         </button>
       </form>
+      {message && <p className="mt-3 text-green-600">{message}</p>}
     </div>
   );
-};
-
-export default PostForm;
+}

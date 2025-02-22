@@ -4,10 +4,10 @@ import NavBar from "../Components/navBar";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/Dialog";
 import PostForm from "../Components/postForm";
-import PostList from "../Components/postList";
 
-const Page = ({userId}) => {
+const Page = () => {
   const [name, setName] = useState("");
+  const [posts, setPosts] = useState([{}]);
 
   useEffect(() => {
     const fetchedUser = async () => {
@@ -26,7 +26,6 @@ const Page = ({userId}) => {
         }
       } catch (error) {
         alert("Error while fetching User Data");
-        console.log("Error: ", error);
       }
     };
 
@@ -47,13 +46,12 @@ const Page = ({userId}) => {
       }
     } catch (error) {
       alert("DB connection error, Can't Log Out.");
-      console.log("Error: ", error);
     }
   };
 
   const [visible, setVisible] = useState(false);
   const footerContent = (
-    <div>
+    <div className="flex flex-row gap-3 pl-1">
       <Button
         label="Yes"
         icon="pi pi-check"
@@ -61,28 +59,47 @@ const Page = ({userId}) => {
           setVisible(false);
           handleLogout();
         }}
-        className="bg-red-100"
+        className="bg-red-100 px-2 py-1 rounded-md border border-black"
       />
       <Button
         label="No"
         icon="pi pi-times"
         onClick={() => setVisible(false)}
         autoFocus
-        className="p-button-text bg-green-100"
+        className="bg-green-100 not-visited:px-2 py-1 rounded-md border border-black"
       />
     </div>
   );
+
+  // Fetching the DB data.
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/posts/getall");
+        setPosts(response.data);
+      } catch (error) {
+        alert("Error: ", error);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <div>
       {/* Calling the component by sending the name as props */}
       <NavBar userName={name} />
-      <div>Here you will see the Posts.</div>
-      <div className="p-4">
-        <PostForm userId={userId} />
-        <PostList />
+      <div>
+        <PostForm userName={name} />
       </div>
-
+      <div className="flex flex-col w-full border border-black">
+        {posts.map((item, index) => (
+          <div key={index}>
+            <h3>{item.userName}</h3>
+            <p>{item.caption}</p>
+            <small>{new Date(item.createdAt).toLocaleString()}</small>
+          </div>
+        ))}
+      </div>
       <Button
         label="Log Out"
         icon="pi pi-external-link"
@@ -90,16 +107,17 @@ const Page = ({userId}) => {
         className=" mt-2 px-2 py-1 bg-blue-200 hover:bg-blue-400 border-2 rounded-md"
       />
       <Dialog
-        header="Log Out"
+        className="p-2 bg-gray-100 border-2 border-blue-950 rounded-xl"
         visible={visible}
-        style={{ width: "50vw" }}
+        style={{ width: "30vw" }}
         onHide={() => {
           if (!visible) return;
           setVisible(false);
         }}
         footer={footerContent}
       >
-        <p className="m-0">Are you sure wanna Log Out??</p>
+        <h1 className="text-xl font-bold">Log Out?</h1>
+        <p className="m-2">Are you sure wanna Log Out??</p>
       </Dialog>
     </div>
   );
