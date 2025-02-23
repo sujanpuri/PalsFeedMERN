@@ -85,21 +85,32 @@ const Page = () => {
   }, []);
 
   return (
-    <div>
+    <div className="bg-gray-100">
       {/* Calling the component by sending the name as props */}
       <NavBar userName={name} />
       <div>
         <PostForm userName={name} />
       </div>
-      <div className="flex flex-col w-full border border-black">
+      <div className="flex flex-col w-full max-w-md mx-auto mt-3 space-y-4">
         {posts.map((item, index) => (
-          <div key={index}>
-            <h3>{item.userName}</h3>
-            <p>{item.caption}</p>
-            <small>{new Date(item.createdAt).toLocaleString()}</small>
+          <div
+            key={index}
+            className="bg-white shadow-md border border-gray-300 rounded-lg p-4 hover:shadow-lg transition-shadow"
+          >
+            {/* User Name */}
+            <h3 className="text-lg font-semibold text-gray-800">{item.userName}</h3>
+
+            {/* Caption */}
+            <p className="text-gray-700 mt-1">{item.caption}</p>
+
+            {/* Timestamp */}
+            <small className="text-gray-500 block mt-2 text-sm">
+              {new Date(item.createdAt).toLocaleString()}
+            </small>
           </div>
         ))}
       </div>
+
       <Button
         label="Log Out"
         icon="pi pi-external-link"

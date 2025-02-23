@@ -23,11 +23,11 @@ export default function PostForm({ userName }) {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 border rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold mb-4">Create a Post</h2>
+    <div className="max-w-md mx-auto mt-2 p-2 border rounded-lg shadow-lg">
+      <h2 className="text-md font-bold">Create a Post</h2>
       <form onSubmit={handleSubmit}>
         <textarea
-          className="w-full p-2 border rounded"
+          className="w-full px-2 border border-gray-400 rounded"
           placeholder="Write your caption..."
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
@@ -35,7 +35,7 @@ export default function PostForm({ userName }) {
         />
         <button
           type="submit"
-          className="mt-3 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="mt-2 h-auto w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
         >
           Post
         </button>
