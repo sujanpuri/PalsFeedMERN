@@ -5,10 +5,12 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/Dialog";
 import PostForm from "../Components/postForm";
 import Users from "../Components/users";
+import { useNavigate } from "react-router-dom";
 
 const Page = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [userId, setUserId] = useState('')
+  const [userId, setUserId] = useState("");
   const [posts, setPosts] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -25,10 +27,10 @@ const Page = () => {
 
         if (data.status) {
           setName(data.name);
-          setUserId(data.id)
+          setUserId(data.id);
         } else {
           alert("Session expired, Please log in again.");
-          window.location.href = "/";
+          navigate("/");
         }
       } catch (error) {
         alert("Error while fetching User Data");
@@ -68,7 +70,7 @@ const Page = () => {
       const data = response.status;
       if (data) {
         console.log("Log Out Successfull.");
-        window.location.href = "/";
+        navigate("/");
       } else {
         alert("There is error while logging Out.");
       }
@@ -95,7 +97,7 @@ const Page = () => {
       const res = await axios.post(
         `http://localhost:8080/posts/${postId}/like`,
         {
-          userId: userId, 
+          userId: userId,
         }
       );
       setPosts((prevPosts) =>
@@ -113,7 +115,7 @@ const Page = () => {
 
     try {
       await axios.post(`http://localhost:8080/posts/${postId}/comment`, {
-        userId: userId, 
+        userId: userId,
         userName: name,
         text: commentText,
       });
@@ -125,9 +127,9 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen w-full">
+    <div className="bg-gray-100 max-h-screen max-w-screen">
       {/* NavBar */}
-      <NavBar userName={name} />
+      <NavBar userName={name} userId={userId} />
 
       {/* Body */}
       <div className="flex w-full h-auto justify-around border">
@@ -161,7 +163,6 @@ const Page = () => {
         {/* 2nd Section */}
         <div className="border border-black h-auto w-[50%] bg-white shadow-lg rounded-md p-4">
           <div className="flex flex-col w-full max-w-md mx-auto mt-3 space-y-6">
-
             {/* mapping the posts */}
             {posts.map((post) => (
               <div key={post._id} className="bg-white p-4 rounded-lg shadow-md">
@@ -181,7 +182,6 @@ const Page = () => {
                   <Button
                     className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
                     onClick={() => handleLike(post._id)}
-
                   >
                     👍 {post.likes.length} Likes
                   </Button>
