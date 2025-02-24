@@ -23,7 +23,7 @@ export default function PostForm({ userName }) {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-2 p-2 border rounded-lg shadow-lg">
+    <div className="bg-white max-w-md mx-auto mt-2 p-2 border rounded-lg shadow-lg">
       <h2 className="text-md font-bold">Create a Post</h2>
       <form onSubmit={handleSubmit}>
         <textarea

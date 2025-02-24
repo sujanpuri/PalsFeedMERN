@@ -7,6 +7,7 @@ const user = async (req, res) => {
     return res.json({ status: false, message: "User not Found" });
     res.json({
         status: true,
+        id: user.id,
         name: user.name,
         email: user.email,
   }); // Extract everything user data from the DB and save in the res.json() which can be used in the "/page".

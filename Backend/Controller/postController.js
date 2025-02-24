@@ -3,7 +3,6 @@ import Post from "../Models/post.js";
 const createPost = async (req, res) => {
   try {
     const { userName, caption } = req.body;
-    console.log(userName + caption);
 
     if (!userName || !caption) {
       return res.json({
@@ -12,7 +11,12 @@ const createPost = async (req, res) => {
       });
     }
 
-    const newPost = new Post({ userName, caption });
+    const newPost = new Post({
+      userName,
+      caption,
+      likes: [],
+      comments: [],
+    });
     await newPost.save();
 
     res.json({ status: true, message: "Post created Successfully." });
@@ -24,7 +28,7 @@ const createPost = async (req, res) => {
 
 const fetchAllPost = async (req, res) => {
   try {
-    const posts = await Post.find().select("userName caption createdAt");
+    const posts = await Post.find().select("userName caption createdAt likes comments");
     res.json(posts);
   } catch (error) {
     console.log("Error fetching posts:", error);
