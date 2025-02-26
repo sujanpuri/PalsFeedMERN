@@ -52,11 +52,12 @@ app.post("/posts/:id/like", async (req, res) => {
     const post = await Post.findById(req.params.id);
     if (!post) return res.json({ message: "Post not found" });
 
+    // checks if the userId is already in the likes array (post.likes).
     const index = post.likes.indexOf(userId);
     if (index === -1) {
-      post.likes.push(userId); // Like the post
+      post.likes.push(userId); // Like the post (by adding userId in the array)
     } else {
-      post.likes.splice(index, 1); // Unlike the post
+      post.likes.splice(index, 1); // Unlike the post (by removing the userId from the array)
     }
 
     await post.save();
