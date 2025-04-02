@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import DbConnect from "./config/db.js";
 import { register, login, admin, logout } from "./Controller/authController.js";
 import authMiddleware from "./Middleware/authMiddleware.js";
@@ -23,10 +24,6 @@ app.use(express.json());
 DbConnect();
 
 
-// Serve uploaded images
-app.use('/uploads', express.static('uploads'));
-
-
 // **Homepage Route**
 app.get("/", (req, res) => {
   res.send("Hello, welcome to the authentication API!");
@@ -41,11 +38,10 @@ app.post("/login", login);
 // Protected Route (Only logged in User can See)
 app.get("/user", authMiddleware, user); // Middleware checks the credentials. (user inputs)
 
-
 //post related routes.
 app.post("/posts/create", createPost);
-
 app.get("/posts/getall", fetchAllPost);
+
 
 // Backend: Like a Post
 app.post("/posts/:id/like", async (req, res) => {

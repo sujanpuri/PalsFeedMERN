@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema(
   {
     userName: String,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     caption: String,
+    imageUrl: String,
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [
       {

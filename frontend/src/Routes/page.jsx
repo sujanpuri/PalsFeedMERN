@@ -10,7 +10,6 @@ import { useUser } from "../Components/userContext";
 
 const Page = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
   const [posts, setPosts] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -60,6 +59,7 @@ const Page = () => {
     try {
       const response = await axios.get("http://localhost:8080/posts/getall");
       setPosts(response.data);
+      console.log("Posts fetched successfully:", response.data);
     } catch (error) {
       alert("Error fetching posts");
     }
@@ -126,6 +126,8 @@ const Page = () => {
         <div className="border border-black w-[23%]">
           <PostForm userName={user} />
           <Users />
+
+          {/* Log Out */}
           <div className="w flex justify-center items-center">
             <Button
               label="Log Out"
@@ -165,6 +167,9 @@ const Page = () => {
 
                 {/* Post Content */}
                 <p className="text-gray-700 mb-3">{post.caption}</p>
+                {post.imageUrl && (
+                  <a href={post.imageUrl}><img src={post.imageUrl} alt="Post" className="w-full h-auto mb-3" /></a>
+                )}
 
                 {/* Actions */}
                 <div className="flex space-x-4 mt-2">

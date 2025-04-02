@@ -2,7 +2,7 @@ import Post from "../Models/post.js";
 
 const createPost = async (req, res) => {
   try {
-    const { userName, caption } = req.body;
+    const { userName, caption, imageUrl, userId } = req.body;
 
     if (!userName || !caption) {
       return res.json({
@@ -14,6 +14,8 @@ const createPost = async (req, res) => {
     const newPost = new Post({
       userName,
       caption,
+      userId,
+      imageUrl,
       likes: [],
       comments: [],
     });
@@ -28,7 +30,7 @@ const createPost = async (req, res) => {
 
 const fetchAllPost = async (req, res) => {
   try {
-    const posts = await Post.find().select("userName caption createdAt likes comments");
+    const posts = await Post.find().select("userName caption createdAt imageUrl likes comments");
     res.json(posts);
   } catch (error) {
     console.log("Error fetching posts:", error);
