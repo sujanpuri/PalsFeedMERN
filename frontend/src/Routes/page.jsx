@@ -4,7 +4,6 @@ import NavBar from "../Components/navBar";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/Dialog";
 import PostForm from "../Components/postForm";
-import Users from "../Components/users";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../Components/userContext";
 
@@ -15,7 +14,7 @@ const Page = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [logVisible, setLogVisible] = useState(false);
-  const {user, userId, setuser, setUserId} = useUser()
+  const { user, userId, setuser, setUserId } = useUser();
 
   const footerContent = (
     <div className="flex flex-row gap-3 pl-1">
@@ -86,19 +85,22 @@ const Page = () => {
       console.log("Error liking post", error);
     }
   };
-  
+
   const handleComment = async (postId) => {
     if (!commentText.trim()) return;
-  
+
     try {
-      const response = await axios.post(`http://localhost:8080/posts/${postId}/comment`, {
-        userId: userId,
-        userName: user,
-        text: commentText,
-      });
-  
+      const response = await axios.post(
+        `http://localhost:8080/posts/${postId}/comment`,
+        {
+          userId: userId,
+          userName: user,
+          text: commentText,
+        }
+      );
+
       const newComment = response.data; // Assuming the API returns the new comment
-  
+
       // Update state immediately
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
@@ -107,58 +109,53 @@ const Page = () => {
             : post
         )
       );
-  
+
       setCommentText(""); // Clear the input field
     } catch (error) {
       console.log("Error adding comment", error);
     }
   };
-  
 
   return (
-    <div className="bg-gray-100 h-screen border-2 max-w-screen">
-      {/* NavBar */}
-      <NavBar />
+    <div className="h-screen border-2 flex flex-col items-center max-w-screen">
+      <div className="flex flex-col w-[50%]">
+        {/* NavBar */}
+        <NavBar />
+      </div>
 
-      {/* Body */}
-      <div className="flex w-full justify-around border">
-        {/* 1st section */}
-        <div className="border border-black w-[23%]">
-          <PostForm userName={user} />
-          <Users />
+      {/* post Section */}
+      <div className="border border-black h-full w-[50%] bg-white shadow-lg rounded-md p-4">
+        <div className="flex flex-col w-full border h-[88vh] overflow-x-hidden overflow-y-scroll space-y-6">
+            <PostForm userName={user} />
+            
+            {/* Log Out */}
+            {/* <div className="w flex justify-center items-center">
+              <Button
+                label="Log Out"
+                icon="pi pi-external-link"
+                onClick={() => setLogVisible(true)}
+                className=" mt-2 px-2 py-1 bg-red-200 hover:bg-red-400 border-2 rounded-md"
+              />
+              <Dialog
+                className="p-2 bg-gray-100 border-2 border-blue-950 rounded-xl"
+                visible={logVisible}
+                style={{ width: "30vw" }}
+                onHide={() => {
+                  if (!logVisible) return;
+                  setLogVisible(false);
+                }}
+                footer={footerContent}
+              >
+                <h1 className="text-xl font-bold">Log Out?</h1>
+                <p className="m-2">Are you sure wanna Log Out??</p>
+              </Dialog>
+            </div> */}
 
-          {/* Log Out */}
-          <div className="w flex justify-center items-center">
-            <Button
-              label="Log Out"
-              icon="pi pi-external-link"
-              onClick={() => setLogVisible(true)}
-              className=" mt-2 px-2 py-1 bg-red-200 hover:bg-red-400 border-2 rounded-md"
-            />
-            <Dialog
-              className="p-2 bg-gray-100 border-2 border-blue-950 rounded-xl"
-              visible={logVisible}
-              style={{ width: "30vw" }}
-              onHide={() => {
-                if (!logVisible) return;
-                setLogVisible(false);
-              }}
-              footer={footerContent}
-            >
-              <h1 className="text-xl font-bold">Log Out?</h1>
-              <p className="m-2">Are you sure wanna Log Out??</p>
-            </Dialog>
-          </div>
-        </div>
-
-        {/* post Section */}
-        <div className="border border-black h-full w-[50%] bg-white shadow-lg rounded-md p-4">
-          <div className="flex flex-col w-full border-2 h-[85vh] overflow-x-hidden overflow-y-scroll max-w-md mx-auto mt-3 space-y-6">
             {/* mapping the posts */}
             {posts.map((post) => (
               <div key={post._id} className="bg-white p-4 rounded-lg shadow-md">
                 {/* Header */}
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex border justify-between items-center mb-2">
                   <h3 className="font-bold text-lg">{post.userName}</h3>
                   <small className="text-gray-500 text-sm">
                     {new Date(post.createdAt).toLocaleString()}
@@ -168,7 +165,13 @@ const Page = () => {
                 {/* Post Content */}
                 <p className="text-gray-700 mb-3">{post.caption}</p>
                 {post.imageUrl && (
-                  <a href={post.imageUrl}><img src={post.imageUrl} alt="Post" className="w-full h-auto mb-3" /></a>
+                  <a href={post.imageUrl}>
+                    <img
+                      src={post.imageUrl}
+                      alt="Post"
+                      className="w-full h-auto mb-3"
+                    />
+                  </a>
                 )}
 
                 {/* Actions */}
@@ -241,12 +244,6 @@ const Page = () => {
                 </div>
               </Dialog>
             )}
-          </div>
-        </div>
-
-        {/* 3rd Section */}
-        <div className="border border-black w-[23%]">
-          Message & Notification Section
         </div>
       </div>
     </div>
