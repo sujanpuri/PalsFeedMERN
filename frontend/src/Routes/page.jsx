@@ -6,41 +6,18 @@ import { Dialog } from "primereact/Dialog";
 import PostForm from "../Components/postForm";
 import Users from "../Components/users";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../Components/userContext";
 
 const Page = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [userId, setUserId] = useState("");
   const [posts, setPosts] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
-
-  useEffect(() => {
-    const fetchedUser = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/user", {
-          withCredentials: true,
-        });
-
-        const data = response.data;
-
-        if (data.status) {
-          setName(data.name);
-          setUserId(data.id);
-        } else {
-          alert("Session expired, Please log in again.");
-          navigate("/");
-        }
-      } catch (error) {
-        alert("Error while fetching User Data");
-      }
-    };
-
-    fetchedUser();
-  }, []);
-
   const [logVisible, setLogVisible] = useState(false);
+  const {user, userId, setuser, setUserId} = useUser()
+
   const footerContent = (
     <div className="flex flex-row gap-3 pl-1">
       <Button
@@ -109,33 +86,45 @@ const Page = () => {
       console.log("Error liking post", error);
     }
   };
-
+  
   const handleComment = async (postId) => {
-    if (!commentText) return;
-
+    if (!commentText.trim()) return;
+  
     try {
-      await axios.post(`http://localhost:8080/posts/${postId}/comment`, {
+      const response = await axios.post(`http://localhost:8080/posts/${postId}/comment`, {
         userId: userId,
-        userName: name,
+        userName: user,
         text: commentText,
       });
-      fetchPosts();
-      setCommentText("");
+  
+      const newComment = response.data; // Assuming the API returns the new comment
+  
+      // Update state immediately
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === postId
+            ? { ...post, comments: [...post.comments, newComment] }
+            : post
+        )
+      );
+  
+      setCommentText(""); // Clear the input field
     } catch (error) {
       console.log("Error adding comment", error);
     }
   };
+  
 
   return (
-    <div className="bg-gray-100 max-h-screen max-w-screen">
+    <div className="bg-gray-100 h-screen border-2 max-w-screen">
       {/* NavBar */}
-      <NavBar userName={name} userId={userId} />
+      <NavBar />
 
       {/* Body */}
-      <div className="flex w-full h-auto justify-around border">
+      <div className="flex w-full justify-around border">
         {/* 1st section */}
         <div className="border border-black w-[23%]">
-          <PostForm userName={name} />
+          <PostForm userName={user} />
           <Users />
           <div className="w flex justify-center items-center">
             <Button
@@ -160,9 +149,9 @@ const Page = () => {
           </div>
         </div>
 
-        {/* 2nd Section */}
-        <div className="border border-black h-auto w-[50%] bg-white shadow-lg rounded-md p-4">
-          <div className="flex flex-col w-full max-w-md mx-auto mt-3 space-y-6">
+        {/* post Section */}
+        <div className="border border-black h-full w-[50%] bg-white shadow-lg rounded-md p-4">
+          <div className="flex flex-col w-full border-2 h-[85vh] overflow-x-hidden overflow-y-scroll max-w-md mx-auto mt-3 space-y-6">
             {/* mapping the posts */}
             {posts.map((post) => (
               <div key={post._id} className="bg-white p-4 rounded-lg shadow-md">

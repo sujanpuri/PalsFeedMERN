@@ -9,7 +9,6 @@ const authMiddleware = async (req, res, next) => {
       // Verifying JWT token 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);  // Decoded typically contains the userId encoded in the token
       req.user = decoded;   //stores userId in "req.user"
-      
       next();
       //we extracted the UserId from jwt token and saved it in the req.user so we can use this
     }catch(err){

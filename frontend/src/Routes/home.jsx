@@ -2,25 +2,37 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import { EyeIcon, EyeOffIcon } from "lucide-react"; // Import icons
 import axios from "axios";
+import { useUser } from "../Components/userContext"; // Import user context
 
 const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { fetchUser} = useUser(); // Get fetchUser function from context
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const response = await axios.post(
         "http://localhost:8080/login",
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true } //allows sending cookies (JWT/session) with the request, enabling authentication persistence.
       );
-      navigate("/page")
+      if (response.data.status) {
+        await fetchUser(); // Fetch user data after login
+        navigate("/page");
+      } else {
+        alert("Invalid credentials");
+      }
     } catch (error) {
       alert("Login Unsuccessfull");
       console.log("Error login: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,7 +93,7 @@ const Home = () => {
             type="submit"
             className="w-full py-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition"
           >
-            Login
+            {loading ? "Loading..." : "Login"}
           </button>
 
           <p className="text-sm text-gray-600 text-center">

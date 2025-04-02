@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import { EyeIcon, EyeOffIcon } from "lucide-react"; // Import icons
 import axios from "axios";
+import { useUser } from "../Components/userContext";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -10,6 +11,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate(); // ✅ Initialize useNavigate
+  const { fetchUser } = useUser();
   
 
   const handleSignup = async (event) => {
@@ -22,13 +24,16 @@ const Signup = () => {
         { withCredentials: true }
       );
       const data = response.data.status;
+      setLoading(true)
       if (data) {
         console.log("Redirecting to /page...");
+        await fetchUser(); // Fetch user data after signup
         navigate("/page"); // ✅ Redirect properly
       } else{
         alert (response.data.message)
       }
     } catch (error) {
+      setLoading(false)
       alert("Sign Up error: ", error)
     }
   };
@@ -112,7 +117,7 @@ const Signup = () => {
             type="submit"
             className="w-full py-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition"
           >
-            Sign Up
+            {loading?"Loading...":"Sign Up"}
           </button>
 
           <p className="text-sm text-gray-600 text-center">

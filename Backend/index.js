@@ -22,6 +22,11 @@ app.use(express.json());
 
 DbConnect();
 
+
+// Serve uploaded images
+app.use('/uploads', express.static('uploads'));
+
+
 // **Homepage Route**
 app.get("/", (req, res) => {
   res.send("Hello, welcome to the authentication API!");
@@ -41,7 +46,6 @@ app.get("/user", authMiddleware, user); // Middleware checks the credentials. (u
 app.post("/posts/create", createPost);
 
 app.get("/posts/getall", fetchAllPost);
-
 
 // Backend: Like a Post
 app.post("/posts/:id/like", async (req, res) => {

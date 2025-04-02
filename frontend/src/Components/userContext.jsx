@@ -11,25 +11,26 @@ export const UserProvider = ({ children }) => {   //  here children is <App.jsx/
   const [user, setUser] = useState("Loading..."); // Store user info
   const [userId, setUserId] = useState(null)
   
-  // Check if user is authenticated
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get("http://localhost:8080/user", {
-          withCredentials: true,
-        });
-        setUser(res.data.name)
-        setUserId(res.data.id)
-      } catch (error) {
-        setUser(null);
-      }
-    };
 
+  
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/user", {
+        withCredentials: true,
+      });
+      setUser(res.data.name)
+      setUserId(res.data.id)
+    } catch (error) {
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
     fetchUser();
-  }, [userId, user]);  // Runs when user or userId changes, so data can be changed from null to userId/userName
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, userId, setUserId, fetchUser }}>
       {children}
     </UserContext.Provider>
   );
