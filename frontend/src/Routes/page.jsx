@@ -109,17 +109,16 @@ const Page = () => {
     }
   };
 
-
   return (
-    <div className="h-[100vh] bg-black border-2 flex flex-col items-center max-w-screen">
+    <div className="h-[100vh] bg-gray-800 flex flex-col items-center max-w-screen overflow-hidden">
       <div className="flex flex-col w-[50%]">
         {/* NavBar */}
         <NavBar />
       </div>
 
       {/* post Section */}
-      <div className="h-full w-[50%] border-t bg-white shadow-lg ">
-        <div className="flex flex-col w-full border h-[100%] overflow-x-hidden p-4 overflow-y-scroll space-y-4">
+      <div className="h-full w-[50%] border-t border-grey-800 bg-white shadow-lg ">
+        <div className="flex flex-col w-full h-[100%] bg-gray-100 overflow-x-hidden p-4 overflow-y-scroll space-y-4 scrollbar-thin scrollbar-gray-300 scrollbar-track-gray-100">
           <PostForm userName={user} />
 
           {/* Log Out */}
@@ -146,48 +145,55 @@ const Page = () => {
             </div> */}
 
           {/* mapping the posts */}
-          {posts.map((post) => (
-            <div key={post._id} className="bg-white p-4 border rounded-lg shadow-md">
-              {/* Header */}
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-bold text-lg">{post.userName}</h3>
-                <small className="text-gray-500 text-sm">
-                  {new Date(post.createdAt).toLocaleString()}
-                </small>
-              </div>
+          {posts
+            .slice() // Create a copy to avoid mutating state directly
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by date
+            .map((post) => (
+              <div
+                key={post._id}
+                className="bg-white p-4 border border-gray-300 rounded-lg shadow-md"
+              >
+                {/* Header */}
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-bold text-lg">{post.userName}</h3>
+                  <small className="text-gray-500 text-sm">
+                    {new Date(post.createdAt).toLocaleString()}
+                  </small>
+                </div>
 
-              {/* Post Content */}
-              <p className="text-gray-700 mb-3">{post.caption}</p>
-              {post.imageUrl && (
-                <a href={post.imageUrl}>
-                  <img
-                    src={post.imageUrl}
-                    alt="Post"
-                    className="w-full h-auto mb-3"
-                  />
-                </a>
-              )}
+                {/* Post Content */}
+                <p className="text-gray-700 mb-3">{post.caption}</p>
+                {post.imageUrl && (
+                  <a href={post.imageUrl}>
+                    <img
+                      src={post.imageUrl}
+                      alt="Post"
+                      className="w-full h-auto mb-3"
+                    />
+                  </a>
+                )}
 
-              {/* Actions */}
-              <div className="flex space-x-4 mt-2">
-                <Button
-                  className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
-                  onClick={() => handleLike(post._id)}
-                >
-                  👍 {post.likes.length} Likes
-                </Button>
-                <Button
-                  className="px-3 py-1 rounded-lg bg-green-200 hover:bg-green-400 transition"
-                  onClick={() => {
-                    setSelectedPost(post);
-                    setVisible(true);
-                  }}
-                >
-                  💬 {post.comments.length} Comments
-                </Button>
+                {/* Actions */}
+                <div className="flex space-x-4 mt-2">
+                  <Button
+                    className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
+                    onClick={() => handleLike(post._id)}
+                  >
+                    👍 {post.likes.length} Likes
+                  </Button>
+                  <Button
+                    className="px-3 py-1 rounded-lg bg-green-200 hover:bg-green-400 transition"
+                    onClick={() => {
+                      setSelectedPost(post);
+                      setVisible(true);
+                    }}
+                  >
+                    💬 {post.comments.length} Comments
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          <div className="h-10 pt-10"></div>
 
           {/* Comment Modal */}
           {selectedPost && (

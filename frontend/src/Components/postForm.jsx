@@ -67,44 +67,44 @@ export default function PostForm({ userName }) {
     }
   };
 
-  return (<div className="bg-white max-w-md mx-auto mt-2 p-2 border rounded-lg shadow-lg">
-    <h2 className="text-md font-semibold mb-1">Create a Post</h2>
-    <form onSubmit={handleSubmit} className="space-y-2">
-      <textarea
-        className="w-full px-2 py-1 border border-gray-300 rounded resize-none min-h-[60px]"
-        placeholder="Write your caption..."
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        required
-      />
-      
-      {/* Upload Image */}
-      <div className="flex items-center space-x-2">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="p-1 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 w-32 text-xs"
+  return (
+    <div className="bg-white mt-2 p-3 border border-gray-300 rounded-lg shadow-lg">
+      <h2 className="text-md font-semibold mb-1">Create a Post</h2>
+      <form onSubmit={handleSubmit} className="space-y-2">
+        <textarea
+          className="w-full px-2 py-1 border border-gray-300 rounded resize-none min-h-[60px]"
+          placeholder="Write your caption..."
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          required
         />
-        {preview && (
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-12 h-12 object-cover rounded-lg shadow-md"
+
+        {/* Upload Image */}
+        <div className="flex items-center space-x-2">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="p-1 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 w-32 text-xs"
           />
-        )}
-      </div>
-  
-      <button
-        type="submit"
-        className="w-full bg-blue-500 text-white py-1 rounded-md hover:bg-blue-600 transition text-sm"
-        disabled={loading}
-      >
-        {loading ? "Posting..." : "Post"}
-      </button>
-    </form>
-    {message && <p className="mt-2 text-green-600 text-sm">{message}</p>}
-  </div>
-  
+          {preview && (
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-12 h-12 object-cover rounded-lg shadow-md"
+            />
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-1 rounded-md hover:bg-blue-600 transition text-sm"
+          disabled={loading}
+        >
+          {loading ? "Posting..." : "Post"}
+        </button>
+      </form>
+      {message && <p className="mt-2 text-green-600 text-sm">{message}</p>}
+    </div>
   );
 }
