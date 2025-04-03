@@ -72,14 +72,14 @@ app.post("/posts/:id/comment", async (req, res) => {
   try {
     const { userId, userName, text } = req.body;
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) return res.json({ message: "Post not found" });
 
     post.comments.push({ userId, userName, text });
     await post.save();
 
     res.json(post.comments);
   } catch (err) {
-    res.status(500).json({ message: "Error adding comment" });
+    res.json({ message: "Error adding comment" });
   }
 });
 

@@ -100,36 +100,30 @@ const Page = () => {
       );
 
       const newComment = response.data; // Assuming the API returns the new comment
-
-      // Update state immediately
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post._id === postId
-            ? { ...post, comments: [...post.comments, newComment] }
-            : post
-        )
-      );
+      console.log("New comment added:", newComment);
 
       setCommentText(""); // Clear the input field
+      fetchPosts(); // Fetch posts again to update the comments
     } catch (error) {
       console.log("Error adding comment", error);
     }
   };
 
+
   return (
-    <div className="h-screen border-2 flex flex-col items-center max-w-screen">
+    <div className="h-[100vh] bg-black border-2 flex flex-col items-center max-w-screen">
       <div className="flex flex-col w-[50%]">
         {/* NavBar */}
         <NavBar />
       </div>
 
       {/* post Section */}
-      <div className="border border-black h-full w-[50%] bg-white shadow-lg rounded-md p-4">
-        <div className="flex flex-col w-full border h-[88vh] overflow-x-hidden overflow-y-scroll space-y-6">
-            <PostForm userName={user} />
-            
-            {/* Log Out */}
-            {/* <div className="w flex justify-center items-center">
+      <div className="h-full w-[50%] border-t bg-white shadow-lg ">
+        <div className="flex flex-col w-full border h-[100%] overflow-x-hidden p-4 overflow-y-scroll space-y-4">
+          <PostForm userName={user} />
+
+          {/* Log Out */}
+          {/* <div className="w flex justify-center items-center">
               <Button
                 label="Log Out"
                 icon="pi pi-external-link"
@@ -151,99 +145,98 @@ const Page = () => {
               </Dialog>
             </div> */}
 
-            {/* mapping the posts */}
-            {posts.map((post) => (
-              <div key={post._id} className="bg-white p-4 rounded-lg shadow-md">
-                {/* Header */}
-                <div className="flex border justify-between items-center mb-2">
-                  <h3 className="font-bold text-lg">{post.userName}</h3>
-                  <small className="text-gray-500 text-sm">
-                    {new Date(post.createdAt).toLocaleString()}
-                  </small>
+          {/* mapping the posts */}
+          {posts.map((post) => (
+            <div key={post._id} className="bg-white p-4 border rounded-lg shadow-md">
+              {/* Header */}
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-bold text-lg">{post.userName}</h3>
+                <small className="text-gray-500 text-sm">
+                  {new Date(post.createdAt).toLocaleString()}
+                </small>
+              </div>
+
+              {/* Post Content */}
+              <p className="text-gray-700 mb-3">{post.caption}</p>
+              {post.imageUrl && (
+                <a href={post.imageUrl}>
+                  <img
+                    src={post.imageUrl}
+                    alt="Post"
+                    className="w-full h-auto mb-3"
+                  />
+                </a>
+              )}
+
+              {/* Actions */}
+              <div className="flex space-x-4 mt-2">
+                <Button
+                  className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
+                  onClick={() => handleLike(post._id)}
+                >
+                  👍 {post.likes.length} Likes
+                </Button>
+                <Button
+                  className="px-3 py-1 rounded-lg bg-green-200 hover:bg-green-400 transition"
+                  onClick={() => {
+                    setSelectedPost(post);
+                    setVisible(true);
+                  }}
+                >
+                  💬 {post.comments.length} Comments
+                </Button>
+              </div>
+            </div>
+          ))}
+
+          {/* Comment Modal */}
+          {selectedPost && (
+            <Dialog
+              visible={visible}
+              onHide={() => setVisible(false)}
+              className="rounded-md p-5 w-[30vw] border border-gray-500 bg-white shadow-lg" // Background for the modal
+              draggable={false} // Prevents dragging
+              modal={true} // Makes it a modal
+            >
+              <div className="space-y-3 bg-white p-4 w-full rounded-md shadow-md">
+                {" "}
+                <h1 className="font-bold">Comments:</h1>
+                {/* Show Comments */}
+                <div className="max-h-60 overflow-y-auto border-b border-gray-200 pb-3">
+                  {selectedPost.comments.length === 0 ? (
+                    <p className="text-gray-500 text-center">
+                      No comments yet.
+                    </p>
+                  ) : (
+                    selectedPost.comments.map((c, idx) => (
+                      <div
+                        key={idx}
+                        className="border-b border-gray-200 flex flex-col justify-start items-start py-2 flex items-center"
+                      >
+                        <strong className="text-blue-800">{c.userName}</strong>
+                        <span className="text-gray-800">{c.text}</span>
+                      </div>
+                    ))
+                  )}
                 </div>
-
-                {/* Post Content */}
-                <p className="text-gray-700 mb-3">{post.caption}</p>
-                {post.imageUrl && (
-                  <a href={post.imageUrl}>
-                    <img
-                      src={post.imageUrl}
-                      alt="Post"
-                      className="w-full h-auto mb-3"
-                    />
-                  </a>
-                )}
-
-                {/* Actions */}
-                <div className="flex space-x-4 mt-2">
+                {/* Add Comment Input */}
+                <div className="flex items-center gap-2">
+                  <input
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Write a comment..."
+                    className="border p-2 w-full rounded-md"
+                  />
                   <Button
-                    className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
-                    onClick={() => handleLike(post._id)}
+                    className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                    onClick={() => handleComment(selectedPost._id)}
                   >
-                    👍 {post.likes.length} Likes
-                  </Button>
-                  <Button
-                    className="px-3 py-1 rounded-lg bg-green-200 hover:bg-green-400 transition"
-                    onClick={() => {
-                      setSelectedPost(post);
-                      setVisible(true);
-                    }}
-                  >
-                    💬 {post.comments.length} Comments
+                    Post
                   </Button>
                 </div>
               </div>
-            ))}
-            {/* Comment Modal */}
-            {selectedPost && (
-              <Dialog
-                visible={visible}
-                onHide={() => setVisible(false)}
-                className="rounded-md p-5 w-[50vw] border border-gray-500 bg-white shadow-lg" // Background for the modal
-                draggable={false} // Prevents dragging
-              >
-                <div className="space-y-3 bg-white p-4 w-full rounded-md shadow-md">
-                  {" "}
-                  <h1 className="font-bold">Comments:</h1>
-                  {/* White box with shadow */}
-                  {/* Show Comments */}
-                  <div className="max-h-60 overflow-y-auto border-b border-gray-200 pb-3">
-                    {selectedPost.comments.length === 0 ? (
-                      <p className="text-gray-500 text-center">
-                        No comments yet.
-                      </p>
-                    ) : (
-                      selectedPost.comments.map((c, idx) => (
-                        <div
-                          key={idx}
-                          className="border-b border-gray-200 flex flex-col justify-start items-start py-2 flex items-center"
-                        >
-                          <strong className="text-blue-800">
-                            {c.userName}
-                          </strong>
-                          <span className="text-gray-800">{c.text}</span>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                  {/* Add Comment Input */}
-                  <div className="flex items-center gap-2">
-                    <input
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
-                      placeholder="Write a comment..."
-                      className="border p-2 w-full rounded-md"
-                    />
-                    <Button
-                      className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-                      onClick={() => handleComment(selectedPost._id)}
-                    >
-                      Post
-                    </Button>
-                  </div>
-                </div>
-              </Dialog>
-            )}
+            </Dialog>
+          )}
         </div>
       </div>
     </div>
