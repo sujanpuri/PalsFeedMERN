@@ -31,10 +31,10 @@ const createPost = async (req, res) => {
 const fetchAllPost = async (req, res) => {
   try {
     const posts = await Post.find().select("userName caption createdAt imageUrl likes comments");
-    res.json(posts);
+    res.json({status: true, message: "Posts fetched successfully.", data: posts});
   } catch (error) {
     console.log("Error fetching posts:", error);
-    res.json({ status: false, message: "Error fetching the Post." });
+    res.json({ status: false, message: "Error fetching the Post.", data: "Error" });
   }
 };
 

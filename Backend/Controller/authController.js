@@ -41,7 +41,6 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res
-        .status(401)
         .json({ status: false, message: "Invalid Email!!" });
     }
 
@@ -49,17 +48,16 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
-        .status(401)
         .json({ status: false, message: "Invalid Password!!" });
     }
 
     // Generate JWT Token using user._id (made by db)
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      // expiresIn: "1h",
     });
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 3600000,
+      // maxAge: 3600000,   //Jwt expires in 1 hour & user logs out after 1 hour
     });
     res.json({ status: true, message: "Login successful" });
   } catch (error) {
