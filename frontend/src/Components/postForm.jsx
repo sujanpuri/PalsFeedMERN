@@ -27,11 +27,11 @@ export default function PostForm({ userName }) {
       if (file) {
         const formData = new FormData();
         formData.append("file", file); // 'file' is used for image uploading
-        formData.append("upload_preset", "PalsFeed"); // Cloudinary preset name
-        formData.append("cloud_name", "dnngud5vd"); // Cloudinary cloud name
+        formData.append("upload_preset", process.env.CLOUDINARY_PRESET); // Cloudinary preset name
+        formData.append("cloud_name", process.env.CLODINARY_CLOUD_NAME); // Cloudinary cloud name
 
         const res = await axios.post(
-          "https://api.cloudinary.com/v1_1/dnngud5vd/image/upload",
+          process.env.CLOUDINARY_API,
           formData
         );
 
@@ -42,7 +42,7 @@ export default function PostForm({ userName }) {
 
       // Step 2: Upload Post with Caption & Image URL (only if imageUrl exists)
       const postResponse = await axios.post(
-        "http://localhost:8080/posts/create",
+        `${process.envBACKEND_URI}/posts/create`,
         {
           userId, // Send userId
           userName, // Send userName

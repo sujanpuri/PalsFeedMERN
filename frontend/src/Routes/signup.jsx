@@ -19,7 +19,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/register",
+        `${process.env.BACKEND_URI}/register`,
         { name, email, password },
         { withCredentials: true }
       );

@@ -18,7 +18,7 @@ const Page = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/posts/getall");
+      const response = await axios.get(`${process.env.BACKEND_URI}/posts/getall`);
       const data = response.data.data;
       setPosts(data);
       console.log("Posts Fetching Result:", data);
@@ -40,7 +40,7 @@ const Page = () => {
   const handleLike = async (postId) => {
     try {
       const res = await axios.post(
-        `http://localhost:8080/posts/${postId}/like`,
+        `${process.env.BACKEND_URI}/posts/${postId}/like`,
         {
           userId: userId,
         }
@@ -60,7 +60,7 @@ const Page = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/posts/${postId}/comment`,
+        `${process.env.BACKEND_URI}/posts/${postId}/comment`,
         {
           userId: userId,
           userName: user,
@@ -80,7 +80,7 @@ const Page = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.delete("http://localhost:8080/logout", {
+      const response = await axios.delete(`${process.env.BACKEND_URI}/logout`, {
         withCredentials: true,
       });
       const data = response.status;
