@@ -12,19 +12,19 @@ const register = async (req, res) => {
       return res.json({ status: false, message: "User already exist!!" });
     }
     
-    const hashPassword = await bcrypt.hash(password, 10);
+    // const hashPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ name, email, password: hashPassword });
+    const newUser = new User({ name, email, password });
     await newUser.save();
 
     const user = await User.findOne({ email });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      // expiresIn: "1h",
     });
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 3600000,
+      // maxAge: 3600000,
     });
 
     res.json({ status: true, message: "User registration Successfull." });
