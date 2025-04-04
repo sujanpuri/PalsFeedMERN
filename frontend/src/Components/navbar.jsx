@@ -5,6 +5,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/Dialog";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.jpg"; // Importing logo image
 
 const NavBar = () => {
   const { user } = useUser(); // Get user from context
@@ -56,8 +57,13 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex flex-row w-full h-10 items-center justify-between bg-blue-200 p-2">
-      <div className="font-bold text-2xl">PalsFeed</div>
+    <div className="flex flex-row w-full h-10 items-center justify-between bg-[#82b1e5] p-2">
+      <div className="flex gap-2 justify-center items-center">
+        <img src={logo} alt="" className="h-7 w-10"/>
+        <h1 className="font-bold text-2xl ">
+          PalsFeed
+        </h1>
+      </div>
       <div className="flex ">
         <Link to="/profile">
           <div className="font-semibold">

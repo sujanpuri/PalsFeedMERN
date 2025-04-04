@@ -13,9 +13,8 @@ const Page = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const { user, userId, setuser, setUserId } = useUser();
-  
-    const navigate = useNavigate();
 
+  const navigate = useNavigate();
 
   const fetchPosts = async () => {
     try {
@@ -23,10 +22,10 @@ const Page = () => {
       const data = response.data.data;
       setPosts(data);
       console.log("Posts Fetching Result:", data);
-      if(data){
+      if (data) {
         console.log("Posts fetched successfully.");
-      }else{
-        (handleLogout())
+      } else {
+        handleLogout();
         alert("There is error while fetching posts.");
       }
     } catch (error) {
@@ -97,19 +96,17 @@ const Page = () => {
     }
   };
 
-
   return (
-    <div className="h-[100vh] bg-gray-800 flex flex-col items-center max-w-screen overflow-hidden">
-      <div className="flex flex-col w-[50%]">
+    <div className="h-[100vh] bg-gray-800 flex flex-col items-center max-w-screen overflow-hidden w-full">
+      <div className="flex flex-col md:w-[50%] w-full">
         {/* NavBar */}
         <NavBar />
       </div>
 
       {/* post Section */}
-      <div className="h-full w-[50%] border-t border-grey-800 bg-white shadow-lg ">
-        <div className="flex flex-col w-full h-[100%] bg-gray-100 overflow-x-hidden p-4 overflow-y-scroll space-y-4 scrollbar-thin scrollbar-gray-300 scrollbar-track-gray-100">
+      <div className="h-full md:w-[50%] w-full border-t border-grey-800 shadow-lg">
+        <div className="flex flex-col w-full h-[100%] bg-gray-200 overflow-x-hidden p-4 overflow-y-scroll space-y-4 scrollbar-thin scrollbar-gray-300 scrollbar-track-gray-100">
           <PostForm userName={user} />
-
 
           {/* mapping the posts */}
           {posts
@@ -141,7 +138,7 @@ const Page = () => {
                 )}
 
                 {/* Actions */}
-                <div className="flex space-x-4 mt-2">
+                <div className="flex gap-x-4 mt-2">
                   <Button
                     className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
                     onClick={() => handleLike(post._id)}
@@ -172,7 +169,6 @@ const Page = () => {
               modal={true} // Makes it a modal
             >
               <div className="space-y-3 bg-white p-4 w-full rounded-md shadow-md">
-                {" "}
                 <h1 className="font-bold">Comments:</h1>
                 {/* Show Comments */}
                 <div className="max-h-60 overflow-y-auto border-b border-gray-200 pb-3">
