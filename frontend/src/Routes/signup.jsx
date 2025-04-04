@@ -19,7 +19,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URI}/register`,
+        `${import.meta.env.VITE_BACKEND_URI}/register`,
         { name, email, password },
         { withCredentials: true }
       );

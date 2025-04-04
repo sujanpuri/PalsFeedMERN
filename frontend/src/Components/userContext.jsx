@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {   //  here children is <App.jsx/
   
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/user", {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/user`, {
         withCredentials: true,
       });
       setUser(res.data.name)

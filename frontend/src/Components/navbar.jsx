@@ -40,7 +40,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.delete("http://localhost:8080/logout", {
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URI}/logout`, {
         withCredentials: true,
       });
       const data = response.status;

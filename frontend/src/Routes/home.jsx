@@ -18,7 +18,7 @@ const Home = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URI}/login`,
+        `${import.meta.env.VITE_BACKEND_URI}/login`,
         { email, password },
         { withCredentials: true } //allows sending cookies (JWT/session) with the request, enabling authentication persistence.
       );

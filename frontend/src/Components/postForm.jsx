@@ -42,7 +42,7 @@ export default function PostForm({ userName }) {
 
       // Step 2: Upload Post with Caption & Image URL (only if imageUrl exists)
       const postResponse = await axios.post(
-        `${process.envBACKEND_URI}/posts/create`,
+        `${import.meta.env.VITE_BACKEND_URI}/posts/create`,
         {
           userId, // Send userId
           userName, // Send userName
