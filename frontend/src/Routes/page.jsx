@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NavBar from "../Components/navBar";
+import  NavBar  from "../Components/navBar";
 import { Button } from "primereact/button";
 import PostForm from "../Components/postForm";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,9 @@ const Page = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/posts/getall`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URI}/posts/getall`
+      );
       const data = response.data.data;
       setPosts(data);
       console.log("Posts Fetching Result:", data);
@@ -80,9 +82,12 @@ const Page = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URI}/logout`, {
-        withCredentials: true,
-      });
+      const response = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URI}/logout`,
+        {
+          withCredentials: true,
+        }
+      );
       const data = response.status;
       console.log(data);
       if (data) {
