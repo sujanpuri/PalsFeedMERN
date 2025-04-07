@@ -16,10 +16,11 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173" ], // Allow requests from your frontend
+    origin: true, // Allow requests from any origin
     credentials: true, // Allow cookies, tokens, sessions
   })
 );
+// app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (form submissions)
 app.use(express.json());
 
 DbConnect();
