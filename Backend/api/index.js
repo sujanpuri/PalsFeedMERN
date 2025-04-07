@@ -2,22 +2,21 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import verifyToken from "./Middleware/verifyToken.js";
+import verifyToken from "../Middleware/verifyToken.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import DbConnect from "./config/db.js";
-import { register, login, admin, logout } from "./Controller/authController.js";
-import authMiddleware from "./Middleware/authMiddleware.js";
-import user from "./Controller/userController.js"; //handles user related APIs
-import { createPost, fetchAllPost } from "./Controller/postController.js";
-import Post from "./Models/post.js";
-
-const app = express();
+import { register, login, admin, logout } from "../Controller/authController.js";
+import authMiddleware from "../Middleware/authMiddleware.js";
+import user from "../Controller/userController.js"; //handles user related APIs
+import { createPost, fetchAllPost } from "../Controller/postController.js";
+import Post from "../Models/post.js";
+import DbConnect from "../config/db.js"; // Import the database connection function
 dotenv.config();
+const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from your frontend
+    origin: ["http://localhost:5173" ], // Allow requests from your frontend
     credentials: true, // Allow cookies, tokens, sessions
   })
 );

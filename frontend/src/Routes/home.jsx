@@ -10,18 +10,21 @@ const Home = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { fetchUser} = useUser(); // Get fetchUser function from context
+  const { fetchUser } = useUser(); // Get fetchUser function from context
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     setLoading(true);
+    const uri = `${import.meta.env.VITE_BACKEND_URI}/login`;
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URI}/login`,
+        uri,
         { email, password },
         { withCredentials: true } //allows sending cookies (JWT/session) with the request, enabling authentication persistence.
       );
+
       if (response.data.status) {
         await fetchUser(); // Fetch user data after login
         navigate("/page");

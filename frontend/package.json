@@ -2,10 +2,13 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "vite",
+    "start": "vite preview",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

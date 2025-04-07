@@ -27,11 +27,11 @@ export default function PostForm({ userName }) {
       if (file) {
         const formData = new FormData();
         formData.append("file", file); // 'file' is used for image uploading
-        formData.append("upload_preset", process.env.CLOUDINARY_PRESET); // Cloudinary preset name
-        formData.append("cloud_name", process.env.CLODINARY_CLOUD_NAME); // Cloudinary cloud name
+        formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET); // Cloudinary preset name
+        formData.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME); // Cloudinary cloud name
 
         const res = await axios.post(
-          process.env.CLOUDINARY_API,
+          import.meta.env.VITE_CLOUDINARY_API,
           formData
         );
 
