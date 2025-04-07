@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useUser } from "../Components/userContext.jsx"; // Importing user context
+import { useUser } from "./userContext.jsx"; // Importing user context
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/Dialog";
 import axios from "axios";

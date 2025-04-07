@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NavBar from "../Components/navBar";
+import NavBar from "../Components/NavBar";
 import { Button } from "primereact/button";
 import PostForm from "../Components/postForm";
 import { useNavigate } from "react-router-dom";
