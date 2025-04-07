@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NavBar from "../Components/NavBar";
+import NavBar from "../Components/navBar";
 import { Button } from "primereact/button";
 import PostForm from "../Components/postForm";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../Components/userContext";
-import { Dialog } from "primereact/dialog";
+import { Dialog } from "primereact/button";
 
 const Page = () => {
   const [posts, setPosts] = useState([]);
