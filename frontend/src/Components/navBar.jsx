@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "./userContext.jsx"; // Importing user context
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/Dialog";
+import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg"; // Importing logo image
