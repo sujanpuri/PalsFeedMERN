@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import PostForm from "../Components/postForm";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../Components/userContext";
-import { Dialog } from "primereact/button";
+import { Dialog } from "primereact/dialog";
 
 const Page = () => {
   const [posts, setPosts] = useState([]);
