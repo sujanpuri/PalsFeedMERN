@@ -1,16 +1,15 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
-import jwt from "jsonwebtoken";
-import verifyToken from "../Middleware/verifyToken.js";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import { register, login, admin, logout } from "../Controller/authController.js";
 import authMiddleware from "../Middleware/authMiddleware.js";
 import user from "../Controller/userController.js"; //handles user related APIs
 import { createPost, fetchAllPost } from "../Controller/postController.js";
 import Post from "../Models/post.js";
 import DbConnect from "../config/db.js"; // Import the database connection function
+import serverless from 'serverless-http';
+
 dotenv.config();
 const app = express();
 app.use(cookieParser());
@@ -21,6 +20,7 @@ app.use(
   })
   
 );
+export const handler = serverless(app);
 // app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (form submissions)
 app.use(express.json());
 
