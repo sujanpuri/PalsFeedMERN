@@ -16,7 +16,7 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ['https://palsfeed.sujanpuri.com.np', 'http://localhost:5173'], // ✅ ARRAY of strings
+    origin: ['https://palsfeed.sujanpuri.com.np'], // ✅ Frontend domain (no trailing slash)
     credentials: true,
   })
   
