@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 // Checks if Users have valid jwt token
 const authMiddleware = async (req, res, next) => {    
     const token = req.cookies.jwt;    // Checks the jwt token in the cookies of web
+    console.log(token)
     if(!token) return res.json({status: false, message: "Unauthorized"});   //if no token found
   
     try{

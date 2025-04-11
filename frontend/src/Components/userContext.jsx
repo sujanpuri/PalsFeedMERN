@@ -19,6 +19,7 @@ export const UserProvider = ({ children }) => {   //  here children is <App.jsx/
         withCredentials: true,
       });
       setUser(res.data.name)
+      console.log("user data: ", res)
       setUserId(res.data.id)
     } catch (error) {
       setUser(null);
