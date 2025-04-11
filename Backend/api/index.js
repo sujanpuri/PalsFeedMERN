@@ -16,9 +16,10 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'https://palsfeed.sujanpuri.com.np/',
-    credentials: true, // Allow cookies, tokens, sessions
+    origin: ['https://palsfeed.sujanpuri.com.np', 'http://localhost:5173'], // ✅ ARRAY of strings
+    credentials: true,
   })
+  
 );
 // app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (form submissions)
 app.use(express.json());
