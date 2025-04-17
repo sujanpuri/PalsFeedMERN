@@ -13,7 +13,8 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: true, // Allow requests from any origin
+    // origin: true, // Allow requests from any origin
+    origin: 'https://palsfeed.sujanpuri.com.np/',
     credentials: true, // Allow cookies, tokens, sessions
   })
 );
