@@ -8,19 +8,15 @@ import user from "../Controller/userController.js"; //handles user related APIs
 import { createPost, fetchAllPost } from "../Controller/postController.js";
 import Post from "../Models/post.js";
 import DbConnect from "../config/db.js"; // Import the database connection function
-import serverless from 'serverless-http';
-
 dotenv.config();
 const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ['https://palsfeed.sujanpuri.com.np'], // ✅ Frontend domain (no trailing slash)
-    credentials: true,
+    origin: true, // Allow requests from any origin
+    credentials: true, // Allow cookies, tokens, sessions
   })
-  
 );
-export const handler = serverless(app);
 // app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data (form submissions)
 app.use(express.json());
 
