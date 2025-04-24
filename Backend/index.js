@@ -12,7 +12,6 @@ import DbConnect from "./config/db.js";
 dotenv.config();
 const app = express();
 
-// ✅ CORS middleware FIRST
 app.use(
   cors({
     origin: true,
