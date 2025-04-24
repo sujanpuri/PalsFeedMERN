@@ -11,7 +11,7 @@ const register = async (req, res) => {
     if (existingUser) {
       return res.json({ status: false, message: "User already exist!!" });
     }
-    
+
     // const hashPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({ name, email, password });
@@ -24,7 +24,8 @@ const register = async (req, res) => {
     });
     res.cookie("jwt", token, {
       httpOnly: true,
-      // maxAge: 3600000,
+      secure: true, // ✅ for HTTPS on Vercel
+      sameSite: "None", // ✅ to allow cookies cross-domain
     });
 
     res.json({ status: true, message: "User registration Successfull." });
@@ -40,15 +41,13 @@ const login = async (req, res) => {
     // Find user in DB
     const user = await User.findOne({ email });
     if (!user) {
-      return res
-        .json({ status: false, message: "Invalid Email!!" });
+      return res.json({ status: false, message: "Invalid Email!!" });
     }
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res
-        .json({ status: false, message: "Invalid Password!!" });
+      return res.json({ status: false, message: "Invalid Password!!" });
     }
 
     // Generate JWT Token using user._id (made by db)
@@ -57,7 +56,8 @@ const login = async (req, res) => {
     });
     res.cookie("jwt", token, {
       httpOnly: true,
-      // maxAge: 3600000,   //Jwt expires in 1 hour & user logs out after 1 hour
+      secure: true, // ✅ for HTTPS on Vercel
+      sameSite: "None", // ✅ to allow cookies cross-domain
     });
     res.json({ status: true, message: "Login successful" });
   } catch (error) {

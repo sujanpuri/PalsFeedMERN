@@ -1,7 +1,10 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
+import jwt from "jsonwebtoken";
+import verifyToken from "../Middleware/verifyToken.js";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import { register, login, admin, logout } from "../Controller/authController.js";
 import authMiddleware from "../Middleware/authMiddleware.js";
 import user from "../Controller/userController.js"; //handles user related APIs
@@ -13,8 +16,7 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    // origin: true, // Allow requests from any origin
-    origin: 'https://palsfeed.sujanpuri.com.np',
+    origin: true, // Allow requests from any origin
     credentials: true, // Allow cookies, tokens, sessions
   })
 );
