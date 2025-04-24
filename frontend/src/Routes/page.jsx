@@ -19,7 +19,9 @@ const Page = () => {
   const fetchPosts = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URI}/posts/getall`
+        `${import.meta.env.VITE_BACKEND_URI}/posts/getall`,{
+          withCredentials: true,
+        }
       );
       const data = response.data.data;
       setPosts(data);
