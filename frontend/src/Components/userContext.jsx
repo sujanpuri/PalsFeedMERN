@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {   //  here children is <App.jsx/
       console.log("user data: ", res)
       setUserId(res.data.id)
     } catch (error) {
-      setUser(null);
+      setUser(null);  
     }
   };
 
