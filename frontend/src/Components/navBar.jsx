@@ -5,7 +5,8 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.jpg"; // Importing logo image
+import logo from "/logo.jpg"; // Importing logo image
+import { Menu, X } from "lucide-react";
 
 const NavBar = () => {
   const { user } = useUser(); // Get user from context
@@ -71,7 +72,7 @@ const NavBar = () => {
           </div>
         </Link>
         <button className="mx-2" onClick={handleMenu}>
-          {visible ? "close" : "Menu"}
+          {visible ? <X size={24} color="black" /> : <Menu size={24} color="black" />}
         </button>
         {visible && (
           <div className="absolute bg-white shadow-lg rounded-md p-4 mt-10 right-[27%] w-48">
