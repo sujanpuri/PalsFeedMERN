@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import  NavBar  from "../Components/navBar";
+import NavBar from "../Components/navBar";
 import { Button } from "primereact/button";
 import PostForm from "../Components/postForm";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,15 @@ const Page = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const { user, userId, setuser, setUserId } = useUser();
+  const likeSound = new Audio('/like.mp3'); // Path to your sound file
 
   const navigate = useNavigate();
 
   const fetchPosts = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URI}/posts/getall`,{
+        `${import.meta.env.VITE_BACKEND_URI}/posts/getall`,
+        {
           withCredentials: true,
         }
       );
@@ -119,10 +121,14 @@ const Page = () => {
           {posts
             .slice() // Create a copy to avoid mutating state directly
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by date
-            .map((post) => (
+            .map((post) => {
+
+              const hasLiked = post.likes.includes(userId); // 👈 check if user liked this post
+              
+              return(
               <div
-                key={post._id}
-                className="bg-white p-4 border border-gray-300 rounded-lg shadow-md"
+              key={post._id}
+              className="bg-white p-4 border border-gray-300 rounded-lg shadow-md"
               >
                 {/* Header */}
                 <div className="flex justify-between items-center mb-2">
@@ -140,30 +146,38 @@ const Page = () => {
                       src={post.imageUrl}
                       alt="Post"
                       className="w-full h-auto mb-3"
-                    />
+                      />
                   </a>
                 )}
 
                 {/* Actions */}
                 <div className="flex gap-x-4 mt-2">
                   <Button
-                    className="px-3 py-1 rounded-lg bg-blue-200 hover:bg-blue-400 transition"
-                    onClick={() => handleLike(post._id)}
-                  >
+                    className={`px-3 py-1 rounded-lg transition ${
+                      hasLiked
+                        ? "bg-blue-500 text-white"
+                        : "bg-blue-200 hover:bg-blue-400"
+                    }`}
+                    onClick={() => {
+                      likeSound.play();
+                      handleLike(post._id);
+                    }}
+                    >
                     👍 {post.likes.length} Likes
                   </Button>
+
                   <Button
                     className="px-3 py-1 rounded-lg bg-green-200 hover:bg-green-400 transition"
                     onClick={() => {
                       setSelectedPost(post);
                       setVisible(true);
                     }}
-                  >
+                    >
                     💬 {post.comments.length} Comments
                   </Button>
                 </div>
               </div>
-            ))}
+            )})}
           <div className="h-10 pt-10"></div>
 
           {/* Comment Modal */}
@@ -171,7 +185,7 @@ const Page = () => {
             <Dialog
               visible={visible}
               onHide={() => setVisible(false)}
-              className="rounded-md p-5 w-[30vw] border border-gray-500 bg-white shadow-lg" // Background for the modal
+              className="rounded-md p-5 md:w-[30vw] border border-gray-500 bg-white shadow-lg" // Background for the modal
               draggable={false} // Prevents dragging
               modal={true} // Makes it a modal
             >

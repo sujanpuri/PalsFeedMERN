@@ -12,6 +12,8 @@ const Home = () => {
   const navigate = useNavigate();
   const { fetchUser } = useUser(); // Get fetchUser function from context
 
+  
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -40,7 +42,10 @@ const Home = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center gap-11 min-h-screen bg-gray-100">
+      <div>
+        <img src="/logo.jpg" alt="Logo" className="h-28 mx-auto mb-4" />
+      </div>
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-xl">
         <h2 className="text-2xl font-semibold text-center text-gray-800">
           Login / Sign Up
