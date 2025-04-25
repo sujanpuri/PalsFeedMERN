@@ -68,6 +68,7 @@ export default function PostForm({ userName }) {
   };
 
   return (
+    
     <div className="bg-white mt-2 p-3 border border-gray-300 rounded-lg shadow-lg">
       <h2 className="text-md font-semibold mb-1">Create a Post</h2>
       <form onSubmit={handleSubmit} className="space-y-2">
