@@ -6,6 +6,7 @@ import PostForm from "../Components/postForm";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../Components/userContext";
 import { Dialog } from "primereact/dialog";
+import { formatDistanceToNow } from 'date-fns';
 
 const Page = () => {
   const [posts, setPosts] = useState([]);
@@ -134,7 +135,7 @@ const Page = () => {
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="font-bold text-lg">{post.userName}</h3>
                   <small className="text-gray-500 text-sm">
-                    {new Date(post.createdAt).toLocaleString()}
+                  {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
                   </small>
                 </div>
 
