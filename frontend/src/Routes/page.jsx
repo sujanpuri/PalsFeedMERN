@@ -14,7 +14,7 @@ const Page = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const { user, userId, setuser, setUserId } = useUser();
-  const likeSound = new Audio('/like.mp3'); // Path to your sound file
+  const likeSound = new Audio('/pop.mp3'); // Path to your sound file
 
   const navigate = useNavigate();
 
